@@ -1,6 +1,6 @@
 <?php
 
-namespace Achillesp\Filterable\Test\Models;
+namespace Achillesp\CrudForms\Test\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

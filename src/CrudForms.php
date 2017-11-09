@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Achilles\CrudForms;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
