@@ -1,0 +1,34 @@
+{
+    "name": "achillesp/laravel-crud-forms",
+    "description": "Create CRUD Forms for Laravel Models.",
+    "license": "MIT",
+    "keywords": ["laravel", "crud", "forms", "eloquent"],
+    "authors": [
+        {
+            "name": "Achilles Panagiotou",
+            "email": "achilles.p@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "^7.0",
+        "illuminate/config": "^5.5",
+        "illuminate/database": "^5.5",
+        "illuminate/http": "^5.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Achillesp\\CrudForms\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Achillesp\\CrudForms\\Test\\": "tests"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
