@@ -17,7 +17,8 @@
         "illuminate/http": "^5.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.4"
+        "phpunit/phpunit": "^6.4",
+        "orchestra/testbench": "~3.0"
     },
     "autoload": {
         "psr-4": {
@@ -27,6 +28,13 @@
     "autoload-dev": {
         "psr-4": {
             "Achillesp\\CrudForms\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Achillesp\\CrudForms\\CrudFormsServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",
