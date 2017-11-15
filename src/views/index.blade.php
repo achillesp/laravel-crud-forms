@@ -1,6 +1,6 @@
-@extends($bladeLayout)
+@extends( $bladeLayout ?: config('crud-forms.blade_layout'))
 
-@section('main-content')
+@section(config('crud-forms.blade_section'))
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -31,7 +31,7 @@
                             <tr>
                                 @foreach ($fields as $field)
                                     {{-- <td>{{ $entity->{$field['name']} }}</td> --}}
-                                    <td>@include( "crudforms.displays.{$field['type']}")</td>
+                                    <td>@include( "crud-forms::displays.{$field['type']}")</td>
                                 @endforeach
 
                                 @if ($withTrashed)

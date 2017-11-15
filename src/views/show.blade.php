@@ -1,6 +1,6 @@
-@extends($bladeLayout)
+@extends( $bladeLayout ?: config('crud-forms.blade_layout'))
 
-@section('main-content')
+@section(config('crud-forms.blade_section'))
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -13,7 +13,7 @@
                     @foreach ($fields as $field)
                         <li>
                             <strong>{{ $field['label'] }}</strong>:
-                            @include( "crudforms.displays.{$field['type']}")
+                            @include( "crud-forms::displays.{$field['type']}")
                         </li>
 
                     @endforeach

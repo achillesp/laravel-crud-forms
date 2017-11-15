@@ -1,4 +1,4 @@
-@include('crudforms.inputs.label')
+@include('crud-forms::inputs.label')
 
 <div class="input-group date">
     <div class="input-group-addon">

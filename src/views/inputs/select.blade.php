@@ -1,4 +1,4 @@
-@include('crudforms.inputs.label')
+@include('crud-forms::inputs.label')
 
 {!! Form::select($field['name'],
     $relationshipOptions["{$field['relationship']}"],

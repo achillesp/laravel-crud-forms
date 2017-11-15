@@ -1,7 +1,7 @@
 @foreach ($fields as $field)
 
     <div class="form-group">
-        @include( "crudforms.inputs.{$field['type']}")
+        @include( "crud-forms::inputs.{$field['type']}")
     </div>
 
 @endforeach

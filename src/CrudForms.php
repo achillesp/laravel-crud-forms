@@ -1,9 +1,10 @@
 <?php
 
-namespace Achilles\CrudForms;
+namespace Achillesp\CrudForms;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 trait CrudForms
 {
@@ -51,7 +52,7 @@ trait CrudForms
      *
      * @var string
      */
-    protected $bladeLayout = 'layouts.app'; // TODO: get default from config file.
+    protected $bladeLayout; // TODO: get default from config file.
 
     /**
      * Whether we want to handle deleted resources.
@@ -80,7 +81,6 @@ trait CrudForms
      * @var array
      */
     protected $validationAttributes = [];
-
 
     // ---------------------------
     // Resource Controller Methods
@@ -158,7 +158,11 @@ trait CrudForms
      */
     public function store(Request $request)
     {
-        $this->validate($request);
+        $validator = Validator::make($request->all(),
+            $this->getValidationRules(),
+            $this->getValidationMessages(),
+            $this->getValidationAttributes()
+        )->validate();
 
         $entity = $this->model->create($request->all());
 
@@ -242,7 +246,11 @@ trait CrudForms
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request);
+        $validator = Validator::make($request->all(),
+            $this->getValidationRules(),
+            $this->getValidationMessages(),
+            $this->getValidationAttributes()
+        )->validate();
 
         $entity = $this->model->findOrFail($id);
 
@@ -294,6 +302,30 @@ trait CrudForms
         request()->session()->flash('status', 'Data restored.');
 
         return redirect(route($this->getRoute().'.index'));
+    }
+
+    /**
+     * Get the array of fields that we need to present in the forms.
+     *
+     * @return array
+     */
+    public function getFormFields()
+    {
+        // No fields declared. We have a table with only a name field.
+        if (0 == count($this->formFields)) {
+            array_push($this->formFields, ['name' => 'name', 'label' => 'Name', 'type' => 'text']);
+
+            return $this->formFields;
+        }
+
+        foreach ($this->formFields as $key => $field) {
+            if (array_has($field, 'relationship') && !array_has($field, 'relFieldName')) {
+                // set default name of related table main field
+                $this->formFields[$key]['relFieldName'] = 'name';
+            }
+        }
+
+        return $this->formFields;
     }
 
     // --------------------------------
@@ -367,30 +399,6 @@ trait CrudForms
         }
         // No title defined. We return the model name.
         return title_case(class_basename($this->model));
-    }
-
-    /**
-     * Get the array of fields that we need to present in the forms.
-     *
-     * @return array
-     */
-    public function getFormFields()
-    {
-        // No fields declared. We have a table with only a name field.
-        if (0 == count($this->formFields)) {
-            array_push($this->formFields, ['name' => 'name', 'label' => 'Name', 'type' => 'text']);
-
-            return $this->formFields;
-        }
-
-        foreach ($this->formFields as $key => $field) {
-            if (array_has($field, 'relationship') && !array_has($field, 'relFieldName')) {
-                // set default name of related table main field
-                $this->formFields[$key]['relFieldName'] = 'name';
-            }
-        }
-
-        return $this->formFields;
     }
 
     /**
@@ -497,19 +505,5 @@ trait CrudForms
     protected function hasField($fieldName)
     {
         return in_array($fieldName, array_column($this->formFields, 'name'), true);
-    }
-
-    /**
-     * Validate the request.
-     *
-     * @param Request $request
-     */
-    protected function validate(Request $request)
-    {
-        $validator = Validator::make($request->all(),
-            $this->getValidationRules(),
-            $this->getValidationMessages(),
-            $this->getValidationAttributes()
-        )->validate();
     }
 }

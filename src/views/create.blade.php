@@ -1,6 +1,6 @@
-@extends($bladeLayout)
+@extends( $bladeLayout ?: config('crud-forms.blade_layout'))
 
-@section('main-content')
+@section(config('crud-forms.blade_section'))
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-primary">
@@ -26,7 +26,7 @@
                 {!! Form::model($entity, ['route' => ["$route.store"], 'method' => 'POST']) !!}
                     <div class="row">
                         <div class="col-sm-12">
-                            @include('crudforms.form')
+                            @include('crud-forms::form')
                         </div>
                     </div>
                     <hr>
@@ -40,7 +40,7 @@
                         {{-- Submit --}}
                         <div class="col-sm-9">
                             <button type="submit" class="btn btn-success btn-block">
-                                <i class='fa fa-check-circle'></i> Submit
+                                <i class='fa fa-check-circle'></i> Submit Form
                             </button>
                         </div>
                     </div>

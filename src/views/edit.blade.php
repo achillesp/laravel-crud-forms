@@ -1,6 +1,6 @@
-@extends($bladeLayout)
+@extends( $bladeLayout ?: config('crud-forms.blade_layout'))
 
-@section('main-content')
+@section(config('crud-forms.blade_section'))
 <div class="row">
     <div class="col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-primary">
@@ -9,7 +9,7 @@
             </div>
 
             <div class="panel-body">
-                @if (count($errors) > 0)
+                @if ($errors && count($errors) > 0)
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2">
                             <div id="validationErrors" class="callout callout-danger">
@@ -27,7 +27,7 @@
                 {!! Form::model($entity, ['route' => ["$route.update", $entity->id], 'method' => 'PATCH']) !!}
                     <div class="row">
                         <div class="col-sm-12">
-                            @include('crudforms.form')
+                            @include('crud-forms::form')
                         </div>
                     </div>
                     <hr>

@@ -2,12 +2,16 @@
 
 namespace Achillesp\CrudForms\Test\Controllers;
 
-use Achilles\CrudForms\CrudForms;
+use Achillesp\CrudForms\CrudForms;
 use Achillesp\CrudForms\Test\Models\Post;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 
 class PostController extends Controller
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use CrudForms;
 
     public function __construct(Post $post)
@@ -42,6 +46,8 @@ class PostController extends Controller
         $this->validationAttributes = [
             'title' => 'Post title'
         ];
+
+//        $this->bladeLayout = 'crud-layout';
 
         $this->model = $post;
     }
