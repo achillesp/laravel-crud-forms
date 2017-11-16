@@ -1,1 +1,3 @@
-{!! Form::label($field['name'], $field['label']) !!}
+<label for="{{ $field['name'] }}">
+    {{ $field['label'] }}
+</label>

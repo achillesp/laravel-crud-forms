@@ -24,7 +24,9 @@
                     </div>
                     <hr>
                 @endif
-                {!! Form::model($entity, ['route' => ["$route.update", $entity->id], 'method' => 'PATCH']) !!}
+                <form action="{{ route("$route.update", $entity->id) }}" method="POST">
+                    {{ method_field('PATCH') }}
+                    {{ csrf_field() }}
                     <div class="row">
                         <div class="col-sm-12">
                             @include('crud-forms::form')
@@ -54,7 +56,7 @@
                         </div>
 
                     </div>
-                {!! Form::close() !!}
+                </form>
             </div>
 
         </div>

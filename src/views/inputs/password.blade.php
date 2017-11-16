@@ -1,6 +1,6 @@
 @include('crud-forms::inputs.label')
 
-<input type="text"
+<input type="password"
        id="{{ $field['name'] }}"
        class="form-control"
        name="{{ $field['name'] }}"

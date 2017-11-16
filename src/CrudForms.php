@@ -20,14 +20,13 @@ trait CrudForms
      *
      * @var array
      */
-    protected $indexFields = ['name']; // TODO: get default from config file.
+    protected $indexFields = ['name'];
 
     /**
      * The fields shown in forms as an array of arrays.
      * Each field is an array with keys:
      * name, label, type, relationship (if applicable).
-     * Type can be: text, textarea, date, select, select_multiple, checkbox
-     * TODO: add radio field (must add view).
+     * Type can be: text, textarea, email, url, password, date, select, select_multiple, checkbox, radio
      *
      * @var array
      */
@@ -52,7 +51,7 @@ trait CrudForms
      *
      * @var string
      */
-    protected $bladeLayout; // TODO: get default from config file.
+    protected $bladeLayout;
 
     /**
      * Whether we want to handle deleted resources.

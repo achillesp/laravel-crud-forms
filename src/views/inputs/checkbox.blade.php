@@ -1,6 +1,13 @@
 <div class="checkbox">
     <label>
-        {!! Form::checkbox( $field['name'], 1, $entity->{$field['name']}, ['class' => 'is-iCheck'] ) !!}
+        <input type="checkbox"
+               id="{{ $field['name'] }}"
+               name="{{ $field['name'] }}"
+               value="1"
+               @if (old($field['name']) || $entity->{$field['name']})
+                   checked="checked"
+               @endif
+        >
         <strong>{{ $field['label'] }}</strong>
     </label>
 </div>

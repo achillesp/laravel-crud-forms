@@ -25,17 +25,16 @@ abstract class TestCase extends OrchestraTestCase
     {
         return [
             CrudFormsServiceProvider::class,
-            \Collective\Html\HtmlServiceProvider::class,
         ];
     }
 
-    protected function getPackageAliases($app)
-    {
-        return [
-            'Form' => \Collective\Html\FormFacade::class,
-            'Html' => \Collective\Html\HtmlFacade::class,
-        ];
-    }
+//    protected function getPackageAliases($app)
+//    {
+//        return [
+//            'Form' => \Collective\Html\FormFacade::class,
+//            'Html' => \Collective\Html\HtmlFacade::class,
+//        ];
+//    }
 
     protected function getEnvironmentSetUp($app)
     {

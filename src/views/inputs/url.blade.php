@@ -1,6 +1,6 @@
 @include('crud-forms::inputs.label')
 
-<input type="text"
+<input type="url"
        id="{{ $field['name'] }}"
        class="form-control"
        name="{{ $field['name'] }}"

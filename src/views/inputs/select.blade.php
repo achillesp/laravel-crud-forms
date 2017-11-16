@@ -1,7 +1,21 @@
+<?php
+
+if (old($field['name'])) {
+    $selectedOption = old($field['name']);
+} else {
+    $selectedOption = $entity->{$field['name']};
+}
+
+?>
+
 @include('crud-forms::inputs.label')
 
-{!! Form::select($field['name'],
-    $relationshipOptions["{$field['relationship']}"],
-    $entity->{$field['name']},
-    ['class' => 'form-control select2', 'placeholder' => 'Select...'])
-!!}
+<select class="form-control select2" id="{{ $field['name'] }}" placeholder="Select..." name="{{ $field['name'] }}">
+    @foreach($relationshipOptions["{$field['relationship']}"] as $key=>$val)
+        <option value="{{ $key }}"
+            @if ($key == $selectedOption)
+                selected="selected"
+            @endif
+        >{{ $val }}</option>
+    @endforeach
+</select>

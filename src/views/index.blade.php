@@ -30,7 +30,6 @@
                         @foreach ($entities as $entity)
                             <tr>
                                 @foreach ($fields as $field)
-                                    {{-- <td>{{ $entity->{$field['name']} }}</td> --}}
                                     <td>@include( "crud-forms::displays.{$field['type']}")</td>
                                 @endforeach
 
@@ -59,12 +58,9 @@
                                         </a>
 
                                         {{-- Delete --}}
-                                        {!! Form::model($entity, [
-                                            'route' => ["$route.destroy", $entity->id],
-                                            'method' => 'DELETE',
-                                            'class' => 'inline',
-                                            'style' => 'display: inline-block;'
-                                        ]) !!}
+                                        <form action="{{ route("$route.destroy", $entity->id) }}" method="POST" style="display: inline-block;">
+                                            {{ method_field('DELETE') }}
+                                            {{ csrf_field() }}
                                             <button class="btn btn-danger delete-btn" type="submit">
                                                 @if (config('crud-forms.button_icons'))
                                                     <i class="fa fa-remove"></i>
@@ -72,21 +68,19 @@
                                                     delete
                                                 @endif
                                             </button>
-                                        {!! Form::close() !!}
+                                        </form>
                                     @elseif ($withTrashed)
                                         {{-- Restore SoftDeleted --}}
-                                        {!! Form::model($entity, [
-                                            'route' => ["$route.restore", $entity->id],
-                                            'method' => 'PUT',
-                                            'class' => 'inline'
-                                        ]) !!}
+                                        <form action="{{ route("$route.restore", $entity->id) }}" method="POST" style="display: inline-block;">
+                                            {{ method_field('PUT') }}
+                                            {{ csrf_field() }}
                                             <button class="btn btn-success restore-btn" type="submit">
                                                 @if (config('crud-forms.button_icons'))
                                                     <i class="fa fa-level-up"></i>
                                                 @endif
-                                                    Restore
+                                                Restore
                                             </button>
-                                        {!! Form::close() !!}
+                                        </form>
                                     @endif
                                 </td>
                             </tr>

@@ -35,19 +35,15 @@
                     </div>
                     {{-- Delete resource --}}
                     <div class="col-sm-3">
-                        {!! Form::model($entity, [
-                            'route' => ["$route.destroy", $entity->id],
-                            'method' => 'DELETE',
-                            'style' => 'width: 100%',
-                            'class' => 'inline'
-                        ]) !!}
-                        <button class="btn btn-danger delete-btn btn-block" type="submit">
-                            <i class="fa fa-remove"></i> Delete {{ $title }}
-                        </button>
 
-                        {!! Form::close() !!}
-                    </div>
-                </div>
+                        <form action="{{ route("$route.destroy", $entity->id) }}" method="POST" style="display: inline-block;">
+                            {{ method_field('DELETE') }}
+                            {{ csrf_field() }}
+                            <button class="btn btn-danger delete-btn btn-block" type="submit">
+                                <i class="fa fa-remove"></i> Delete {{ $title }}
+                            </button>
+                        </form>
+                 </div>
             </div>
         </div>
     </div>

@@ -3,4 +3,3 @@
 @else
     NO
 @endif
-{{-- {{ ($entity->{$field['name']} == true) ? 'ΝΑΙ' : 'ΟΧΙ'  }} --}}
