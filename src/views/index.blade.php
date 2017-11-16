@@ -42,12 +42,20 @@
                                     @if (empty($entity->deleted_at))
                                         {{-- Show --}}
                                         <a href="{{ route("$route.show", $entity->id ) }}" class="btn btn-info">
-                                            <i class="fa fa-info-circle"></i>
+                                            @if (config('crud-forms.button_icons'))
+                                                <i class="fa fa-info-circle"></i>
+                                            @else
+                                                show
+                                            @endif
                                         </a>
 
                                         {{-- Update --}}
                                         <a href="{{ route("$route.edit", $entity->id ) }}" class="btn btn-warning">
-                                            <i class="fa fa-edit"></i>
+                                            @if (config('crud-forms.button_icons'))
+                                                <i class="fa fa-edit"></i>
+                                            @else
+                                                edit
+                                            @endif
                                         </a>
 
                                         {{-- Delete --}}
@@ -58,7 +66,11 @@
                                             'style' => 'display: inline-block;'
                                         ]) !!}
                                             <button class="btn btn-danger delete-btn" type="submit">
-                                                <i class="fa fa-remove"></i>
+                                                @if (config('crud-forms.button_icons'))
+                                                    <i class="fa fa-remove"></i>
+                                                @else
+                                                    delete
+                                                @endif
                                             </button>
                                         {!! Form::close() !!}
                                     @elseif ($withTrashed)
@@ -69,7 +81,10 @@
                                             'class' => 'inline'
                                         ]) !!}
                                             <button class="btn btn-success restore-btn" type="submit">
-                                                <i class="fa fa-level-up"></i> Restore
+                                                @if (config('crud-forms.button_icons'))
+                                                    <i class="fa fa-level-up"></i>
+                                                @endif
+                                                    Restore
                                             </button>
                                         {!! Form::close() !!}
                                     @endif
