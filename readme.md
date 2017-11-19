@@ -32,7 +32,7 @@ Achillesp\CrudForms\CrudFormsServiceProvider::class
 This package uses a config file which you can override by publishing it to your app's config dir.
 
 ```
-php artisan vendor publish --provider=MatryoshkaServiceProvider --tag=config
+php artisan vendor publish --provider=CrudFormsServiceProvider --tag=config
 ``` 
 
 ## Usage
@@ -203,7 +203,7 @@ The views are built with bootstrap v.3 and also have css classes to support some
 It is also possible to publish the views, so you can change them anyway you need. To publish them, use the following artisan command:
 
 ```
-php artisan vendor publish --provider=MatryoshkaServiceProvider --tag=views
+php artisan vendor publish --provider=CrudFormsServiceProvider --tag=views
 ``` 
 
 ## License
