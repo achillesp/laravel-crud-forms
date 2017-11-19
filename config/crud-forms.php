@@ -4,6 +4,7 @@
 return [
     /*
      * The default base layout that the views extend.
+     * Change this to your app's main layout or the layout you want to use for the forms.
      */
     'blade_layout' => 'crud-forms::layout',
 
@@ -13,7 +14,9 @@ return [
     'blade_section' => 'main-content',
 
     /*
-     * The field that is shown by default in the index view.
+     * The field that is shown by default in the index view (if not defined).
+     * If you have a field named 'name' or 'title' in most of your models,
+     * you can set it here instead of defining the index view display fields.
      */
     'default_index_field' => 'name',
 
