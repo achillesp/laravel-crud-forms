@@ -9,21 +9,7 @@
             </div>
 
             <div class="panel-body">
-                @if ($errors && count($errors) > 0)
-                    <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2">
-                            <div id="validationErrors" class="callout callout-danger">
-                                <h4><i class="fa fa-ban"></i> Form submit failed. Errors found:</h4>
-                                <ul>
-                                    @foreach ($errors->keys() as $key)
-                                        <li data-validation-error={{$key}}>{{ $errors->first($key)}}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                @endif
+                @include('crud-forms::_errors')
                 <form action="{{ route("$route.update", $entity->id) }}" method="POST">
                     {{ method_field('PATCH') }}
                     {{ csrf_field() }}

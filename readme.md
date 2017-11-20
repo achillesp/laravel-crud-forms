@@ -32,7 +32,7 @@ Achillesp\CrudForms\CrudFormsServiceProvider::class
 This package uses a config file which you can override by publishing it to your app's config dir.
 
 ```
-php artisan vendor publish --provider=CrudFormsServiceProvider --tag=config
+php artisan vendor:publish --provider=Achillesp\CrudForms\CrudFormsServiceProvider --tag=config
 ``` 
 
 ## Usage
@@ -89,10 +89,13 @@ This is an array of all the fields you need in the forms. Each field is an array
     - select
     - select_multiple
     - checkbox
+    - checkbox_multiple
     - radio
-4. `relationship`: This is needed in case of a select, select_multiple or radio buttons. 
+4. `relationship`: This is needed in case of a select, select_multiple, radio or checkbox_multiple buttons. 
 You can state here the name of the relationship as it is defined in the model. 
 In the example above, the `Post` model has a `belongsTo` relationship to `category` and a `belongsToMany` relationship to `tags`.
+For `belongsTo` relationships you can use a select or a radio(group of radios) input.
+For `belongsToMany` relationships you can use a select_multiple or checkbox_multiple inputs. 
 5. `relFieldName`: This is optional. It is used only in case we have a relationship, to set the name of the attribute of the related model that is displayed (ie. in a select's options).
 If not defined, the default attribute to be used is `name`.
 
@@ -203,7 +206,7 @@ The views are built with bootstrap v.3 and also have css classes to support some
 It is also possible to publish the views, so you can change them anyway you need. To publish them, use the following artisan command:
 
 ```
-php artisan vendor publish --provider=CrudFormsServiceProvider --tag=views
+php artisan vendor:publish --provider=Achillesp\CrudForms\CrudFormsServiceProvider --tag=views
 ``` 
 
 ## License

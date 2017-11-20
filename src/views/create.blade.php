@@ -8,21 +8,7 @@
                 <h3 class="panel-title">Add New {{ $title }}</h3>
             </div>
             <div class="panel-body">
-                @if (count($errors) > 0)
-                    <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2">
-                            <div id="validationErrors" class="callout callout-danger">
-                                <h4><i class="fa fa-ban"></i> Form submit failed. Errors found:</h4>
-                                <ul>
-                                    @foreach ($errors->keys() as $key)
-                                        <li data-validation-error={{$key}}>{{ $errors->first($key)}}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                @endif
+                @include('crud-forms::_errors')
                 <form action="{{ route("$route.store", $entity->id) }}" method="POST">
                     {{ csrf_field() }}
                     <div class="row">
