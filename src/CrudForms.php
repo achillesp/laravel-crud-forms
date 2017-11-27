@@ -20,17 +20,24 @@ trait CrudForms
      *
      * @var array
      */
-    protected $indexFields = ['name'];
+    protected $indexFields = [];
 
     /**
      * The fields shown in forms as an array of arrays.
      * Each field is an array with keys:
      * name, label, type, relationship (if applicable).
-     * Type can be: text, textarea, email, url, password, date, select, select_multiple, checkbox, radio
+     * Type can be: text, textarea, email, url, password, date, select, select_multiple, checkbox, radio.
      *
      * @var array
      */
     protected $formFields = [];
+
+    /**
+     * The model's relationships that the crud forms may need to use.
+     *
+     * @var array
+     */
+    protected $relationships = [];
 
     /**
      * The form's title (model name or description).
@@ -81,6 +88,15 @@ trait CrudForms
      */
     protected $validationAttributes = [];
 
+    /**
+     * The model relations types that are eager loaded, or load data for options.
+     *
+     * @var array
+     */
+    protected $relationTypesToLoad = [
+        'Illuminate\Database\Eloquent\Relations\BelongsToMany',
+        'Illuminate\Database\Eloquent\Relations\BelongsTo',
+    ];
     // ---------------------------
     // Resource Controller Methods
     // ---------------------------
@@ -127,7 +143,7 @@ trait CrudForms
     {
         $entity = $this->model;
 
-        if ($this->model->relationships) {
+        if (count($this->getRelationships())) {
             $relationshipOptions = $this->getModelRelationshipData();
         }
 
@@ -214,7 +230,7 @@ trait CrudForms
 
         $this->loadModelRelationships($entity);
 
-        if ($this->model->relationships) {
+        if (count($this->getRelationships())) {
             $relationshipOptions = $this->getModelRelationshipData();
         }
 
@@ -327,6 +343,26 @@ trait CrudForms
         return $this->formFields;
     }
 
+    /**
+     * Get an array of all the model's relationships needed in the crud forms.
+     *
+     * @return array
+     */
+    public function getRelationships()
+    {
+        foreach ($this->getFormFields() as $field) {
+            if (
+                array_has($field, 'relationship') &&
+                !array_has($this->relationships, $field['relationship']) &&
+                method_exists($this->model, $field['relationship'])
+            ) {
+                $this->relationships[] = $field['relationship'];
+            }
+        }
+
+        return $this->relationships;
+    }
+
     // --------------------------------
     // Getters & Setters
     // --------------------------------
@@ -407,13 +443,16 @@ trait CrudForms
      */
     protected function getIndexFields()
     {
-        // We only want the fields that are declared to use for index pages.
-        // So we restrict the formFields to those declared in the indexFields
-        $this->formFields = array_where($this->getFormFields(), function ($value) {
+        // If none declared, use the first of the formFields.
+        if (0 == count($this->indexFields)) {
+            $this->indexFields = [$this->formFields[0]['name']];
+
+            return array_slice($this->getFormFields(), 0,1);
+        }
+
+        return array_where($this->getFormFields(), function ($value) {
             return in_array($value['name'], $this->indexFields, true);
         });
-
-        return $this->getFormFields();
     }
 
     /**
@@ -423,29 +462,20 @@ trait CrudForms
      */
     protected function getModelRelationshipData()
     {
-        $model = $this->model;
-
         $formFields = $this->getFormFields();
 
-        $relationships = $model->relationships ?: [];
+        $relationships = $this->getRelationships();
 
         foreach ($relationships as $relationship) {
-            $methodClass = get_class($model->$relationship());
-
-            // We only need to find the relationship's field name
+            // We need to find the relationship's field
             $field = array_first(array_filter($formFields, function ($var) use ($relationship) {
                 if (array_has($var, 'relationship') && ($relationship == $var['relationship'])) {
                     return $var;
                 }
             }));
 
-            switch ($methodClass) {
-                case 'Illuminate\Database\Eloquent\Relations\BelongsToMany':
-                    $relationshipData["$relationship"] = $model->$relationship()->getRelated()->all()->pluck($field['relFieldName'], 'id');
-                    break;
-                case 'Illuminate\Database\Eloquent\Relations\BelongsTo':
-                    $relationshipData["$relationship"] = $model->$relationship()->getRelated()->all()->pluck($field['relFieldName'], 'id');
-                    break;
+            if (in_array(get_class($this->model->$relationship()), $this->relationTypesToLoad, true)) {
+                $relationshipData["$relationship"] = $this->model->$relationship()->getRelated()->all()->pluck($field['relFieldName'], 'id');
             }
         }
 
@@ -464,7 +494,7 @@ trait CrudForms
      */
     protected function syncModelRelationships(Model $model, Request $request)
     {
-        $relationships = $model->relationships ?: [];
+        $relationships = $this->getRelationships();
 
         foreach ($relationships as $relationship) {
             if ('Illuminate\Database\Eloquent\Relations\BelongsToMany' == get_class($model->$relationship())) {
@@ -480,16 +510,11 @@ trait CrudForms
      */
     protected function loadModelRelationships($entities)
     {
-        $relationships = $this->model->relationships ?: [];
+        $relationships = $this->getRelationships();
 
         foreach ($relationships as $relationship) {
-            switch (get_class($this->model->$relationship())) {
-                case 'Illuminate\Database\Eloquent\Relations\BelongsToMany':
-                    $entities->load($relationship);
-                    break;
-                case 'Illuminate\Database\Eloquent\Relations\BelongsTo':
-                    $entities->load($relationship);
-                    break;
+            if (in_array(get_class($this->model->$relationship()), $this->relationTypesToLoad, true)) {
+                $entities->load($relationship);
             }
         }
     }

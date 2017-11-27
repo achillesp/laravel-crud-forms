@@ -111,26 +111,6 @@ $this->formFields = [
 ];
 ```
 
-In order for the relationships to work, you also need to define an array of `relationships` in the model. 
-So in the Post model, we will need this:
-
-```php
-class Post extends Model
-{
-    public $relationships = ['category', 'tags'];
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
-    }
-}
-``` 
-
 ### The `indexFields` array
 
 These are the model's attributes that are displayed in the index page.
@@ -138,6 +118,8 @@ These are the model's attributes that are displayed in the index page.
 ```php
 $this->indexFields = ['title', 'category_id', 'published'];
 ```
+
+If not defined, then the first of the `formFields` is shown.
 
 ### The `formTitle` (optional)
 

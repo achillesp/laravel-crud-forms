@@ -4,9 +4,6 @@ namespace Achillesp\CrudForms\Test;
 
 use Achillesp\CrudForms\Test\Models\Post;
 
-/**
- * @coversNothing
- */
 class CrudForms extends TestCase
 {
     public function setUp()

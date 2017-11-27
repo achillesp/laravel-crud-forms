@@ -14,14 +14,6 @@ return [
     'blade_section' => 'main-content',
 
     /*
-     * The field that is shown by default in the index view (if not defined).
-     * If you have a field named 'name' or 'title' in most of your models,
-     * you can set it here instead of defining the index view display fields.
-     */
-    'default_index_field' => 'name',
-
-
-    /*
      * Whether the action buttons (show, edit, delete) of the index view should use font awesome icons.
      * If true, you will have to load the font-awesome css in the base layout.
      * (eg https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css).

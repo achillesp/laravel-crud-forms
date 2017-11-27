@@ -12,6 +12,11 @@ use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 abstract class TestCase extends OrchestraTestCase
 {
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
@@ -21,6 +26,12 @@ abstract class TestCase extends OrchestraTestCase
         $this->seedTables();
     }
 
+    /**
+     * Get package providers.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return array
+     */
     protected function getPackageProviders($app)
     {
         return [
@@ -28,14 +39,12 @@ abstract class TestCase extends OrchestraTestCase
         ];
     }
 
-//    protected function getPackageAliases($app)
-//    {
-//        return [
-//            'Form' => \Collective\Html\FormFacade::class,
-//            'Html' => \Collective\Html\HtmlFacade::class,
-//        ];
-//    }
-
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application   $app
+     * @return void
+     */
     protected function getEnvironmentSetUp($app)
     {
         $this->app = $app;
@@ -44,6 +53,11 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('app.key', 'base64:WpZ7D2IUkBA+99f8HABIVujw2HqzR6kLGsTpDdV5nao=');
     }
 
+    /**
+     * Define the routes used in tests.
+     *
+     * @return void
+     */
     protected function setRoutes()
     {
         Route::get('/', function () {
@@ -55,6 +69,11 @@ abstract class TestCase extends OrchestraTestCase
             ['as' => 'post.restore', 'uses' => 'Achillesp\CrudForms\Test\Controllers\PostController@restore'])->middleware('web');
     }
 
+    /**
+     * Setup the test database.
+     *
+     * @return void
+     */
     protected function setUpDatabase()
     {
         $database = new DB();
@@ -64,6 +83,11 @@ abstract class TestCase extends OrchestraTestCase
         $database->setAsGlobal();
     }
 
+    /**
+     * Run migrations on test database.
+     *
+     * @return void
+     */
     protected function migrateTables()
     {
         DB::schema()->create('categories', function ($table) {
@@ -106,6 +130,11 @@ abstract class TestCase extends OrchestraTestCase
         });
     }
 
+    /**
+     * Seed test tables with dummy data.
+     *
+     * @return void
+     */
     protected function seedTables()
     {
         for ($i = 1; $i <= 11; ++$i) {

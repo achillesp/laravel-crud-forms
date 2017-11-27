@@ -18,8 +18,6 @@ class Post extends Model
         'category_id'
     ];
 
-    public $relationships = ['category', 'tags'];
-
     public function category()
     {
         return $this->belongsTo(Category::class);
