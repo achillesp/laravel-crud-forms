@@ -2,13 +2,14 @@
 
 namespace Achillesp\CrudForms\Test;
 
-use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 use Achillesp\CrudForms\Test\Models\Tag;
 use Achillesp\CrudForms\Test\Models\Post;
 use Achillesp\CrudForms\Test\Models\Category;
 use Illuminate\Database\Capsule\Manager as DB;
 use Achillesp\CrudForms\CrudFormsServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Achillesp\CrudForms\Test\Providers\RouteServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -36,6 +37,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         return [
             CrudFormsServiceProvider::class,
+            RouteServiceProvider::class,
         ];
     }
 
@@ -48,25 +50,8 @@ abstract class TestCase extends OrchestraTestCase
     protected function getEnvironmentSetUp($app)
     {
         $this->app = $app;
-        $this->setRoutes();
         $app['config']->set('app.url', 'http://localhost');
         $app['config']->set('app.key', 'base64:WpZ7D2IUkBA+99f8HABIVujw2HqzR6kLGsTpDdV5nao=');
-    }
-
-    /**
-     * Define the routes used in tests.
-     *
-     * @return void
-     */
-    protected function setRoutes()
-    {
-        Route::get('/', function () {
-            return 'home';
-        });
-
-        Route::resource('/post', 'Achillesp\CrudForms\Test\Controllers\PostController')->middleware('web');
-        Route::put('/post/{post}/restore',
-            ['as' => 'post.restore', 'uses' => 'Achillesp\CrudForms\Test\Controllers\PostController@restore'])->middleware('web');
     }
 
     /**
@@ -154,7 +139,7 @@ abstract class TestCase extends OrchestraTestCase
                 'title'      => "post $i",
                 'slug'       => "post-$i",
                 'body'       => "post $i body",
-                'publish_on' => date_sub(now(), date_interval_create_from_date_string("$i days")),
+                'publish_on' => date_sub(Carbon::now(), date_interval_create_from_date_string("$i days")),
                 'published'  => rand(0, 1),
                 'category_id'=> $i,
             ]);

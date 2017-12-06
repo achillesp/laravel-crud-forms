@@ -11,7 +11,7 @@ The views are built using bootstrap (v3), but the styling can easily be override
 
 ## Installation
 
-### Step 1: Composer
+### Composer
 
 From the command line, run:
 
@@ -19,14 +19,6 @@ From the command line, run:
 composer require achillesp/laravel-crud-forms
 ```
  
-### Step 2: Service Provider (Laravel < 5.5)
-
-If using a Laravel version before 5.5, you will need to add the service provider to your app's `providers` array in `config/app.php`:
-
-```
-Achillesp\CrudForms\CrudFormsServiceProvider::class
-```
-
 ### Configuration
 
 This package uses a config file which you can override by publishing it to your app's config dir.
@@ -67,8 +59,8 @@ class PostController extends Controller
 }
 ``` 
 
-In the controller's constructor we define the properties which are handled by the controller.
-The available properties we can define are as follows.
+In the controller's constructor you can define the properties which are handled by the controller.
+The available properties that can be defined are as follows.
 
 ### The model
 
@@ -76,7 +68,7 @@ This is the model, which should be passed in the constructor through Dependency 
 
 ### The formFields array
 
-This is an array of all the fields you need in the forms. Each field is an array that has:
+This is an array of all the fields you need in the forms. Each field is declared as an array that has:
 1. `name`: This is the model's attribute name, as it is in the database.
 2. `label`: This is the field's label in the forms.
 3. `type`: The type of the form input field that will be used. Accepted types are: 
@@ -93,7 +85,7 @@ This is an array of all the fields you need in the forms. Each field is an array
     - radio
 4. `relationship`: This is needed in case of a select, select_multiple, radio or checkbox_multiple buttons. 
 You can state here the name of the relationship as it is defined in the model. 
-In the example above, the `Post` model has a `belongsTo` relationship to `category` and a `belongsToMany` relationship to `tags`.
+In the example bellow, the `Post` model has a `belongsTo` relationship to `category` and a `belongsToMany` relationship to `tags`.
 For `belongsTo` relationships you can use a select or a radio(group of radios) input.
 For `belongsToMany` relationships you can use a select_multiple or checkbox_multiple inputs. 
 5. `relFieldName`: This is optional. It is used only in case we have a relationship, to set the name of the attribute of the related model that is displayed (ie. in a select's options).
@@ -123,7 +115,8 @@ If not defined, then the first of the `formFields` is shown.
 
 ### The `formTitle` (optional)
 
-You can optionally, define the name of the model as we want it to appear in the views. If not defined, the name of the model will be used.
+You can optionally, define the name of the model as we want it to appear in the views. 
+If not defined, the name of the model will be used.
 
 ### The `bladeLayout` (optional)
 
@@ -149,12 +142,12 @@ These are the rules we want to use to validate data before saving the model.
 
 ```php
 $this->validationRules = [
-    'title'       => 'string|required|max:255',
-    'slug'        => 'string|required|max:100',
+    'title'       => 'required|max:255',
+    'slug'        => 'required|max:100',
     'body'        => 'required',
     'publish_on'  => 'date',
     'published'   => 'boolean',
-    'category_id' => 'int|required',
+    'category_id' => 'required|int',
 ];
 ```
 
@@ -185,7 +178,8 @@ The views are built with bootstrap v.3 and also have css classes to support some
 - datepicker class is used in date inputs
 - data-table class is used in the index view table
 
-It is also possible to publish the views, so you can change them anyway you need. To publish them, use the following artisan command:
+It is also possible to publish the views, so you can change them anyway you need. 
+To publish them, use the following artisan command:
 
 ```
 php artisan vendor:publish --provider=Achillesp\CrudForms\CrudFormsServiceProvider --tag=views

@@ -4,7 +4,7 @@ namespace Achillesp\CrudForms\Test;
 
 use Achillesp\CrudForms\Test\Models\Post;
 
-class CrudForms extends TestCase
+class CrudFormsTest extends TestCase
 {
     public function setUp()
     {
@@ -18,7 +18,7 @@ class CrudForms extends TestCase
         $response = $this->get('/post');
 
         $response->assertViewHas('entities', $posts)
-            ->assertSee($posts[0]->title);
+                    ->assertSee($posts[0]->title);
     }
 
     /** @test */
@@ -28,7 +28,7 @@ class CrudForms extends TestCase
         $response = $this->get('/post/1');
 
         $response->assertViewHas('entity', $post)
-            ->assertSee($post->title);
+                    ->assertSee($post->title);
     }
 
     /** @test */
@@ -38,8 +38,8 @@ class CrudForms extends TestCase
         $response = $this->get('/post/1/edit');
 
         $response->assertViewHas('entity', $post)
-            ->assertSee('Submit Form')
-            ->assertSee($post->title);
+                    ->assertSee('Submit Form')
+                    ->assertSee($post->title);
     }
 
     /** @test */
