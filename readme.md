@@ -1,6 +1,6 @@
 # Laravel CRUD Forms
 
-This is a Laravel package to help easily create CRUD (Create, Read, Update, Delete) forms for eloquent models (as well as an index page).
+This is a Laravel >=5.5 package to help easily create CRUD (Create, Read, Update, Delete) forms for eloquent models (as well as an index page).
 It aims to be used as a quick tool which does not interfere with the other parts of the application that it's used in.
 
 The package provides:
