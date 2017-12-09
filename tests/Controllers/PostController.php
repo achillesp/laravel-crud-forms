@@ -3,11 +3,11 @@
 namespace Achillesp\CrudForms\Test\Controllers;
 
 use Achillesp\CrudForms\CrudForms;
+use Illuminate\Routing\Controller;
 use Achillesp\CrudForms\Test\Models\Post;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostController extends Controller
 {
@@ -40,14 +40,12 @@ class PostController extends Controller
         ];
 
         $this->validationMessages = [
-            'body.required' => "You need to fill in the post content."
+            'body.required' => 'You need to fill in the post content.',
         ];
 
         $this->validationAttributes = [
-            'title' => 'Post title'
+            'title' => 'Post title',
         ];
-
-//        $this->bladeLayout = 'crud-layout';
 
         $this->model = $post;
     }

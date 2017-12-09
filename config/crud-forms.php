@@ -11,7 +11,7 @@ return [
     /*
      * The default section in the base blade layout, that the CRUD views will use.
      */
-    'blade_section' => 'main-content',
+    'blade_section' => 'content',
 
     /*
      * Whether the action buttons (show, edit, delete) of the index view should use font awesome icons.

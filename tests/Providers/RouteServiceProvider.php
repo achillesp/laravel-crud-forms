@@ -29,13 +29,9 @@ class RouteServiceProvider extends ServiceProvider
                 return 'home';
             });
 
-            $router->group(['middleware' => 'web'], function($router) {
+            $router->group(['middleware' => 'web'], function ($router) {
                 $router->resource('/post', 'PostController');
-
-                $router->put('/post/{post}/restore',
-                    [
-                        'as' => 'post.restore',
-                        'uses' => 'PostController@restore']);
+                $router->put('/post/{post}/restore','PostController@restore');
             });
         });
     }

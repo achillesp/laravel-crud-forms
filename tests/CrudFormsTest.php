@@ -99,6 +99,8 @@ class CrudFormsTest extends TestCase
 
         $this->assertSame($postCount - 1, Post::all()->count());
 
+        $this->get('/post')->assertSee('Restore');
+
         $this->put('/post/1/restore');
 
         $this->assertSame($postCount, Post::all()->count());

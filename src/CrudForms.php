@@ -316,7 +316,7 @@ trait CrudForms
 
         request()->session()->flash('status', 'Data restored.');
 
-        return redirect(route($this->getRoute().'.index'));
+        return redirect(str_before(request()->path(), "/$id/restore"));
     }
 
     /**
@@ -447,7 +447,7 @@ trait CrudForms
         if (0 == count($this->indexFields)) {
             $this->indexFields = [$this->formFields[0]['name']];
 
-            return array_slice($this->getFormFields(), 0,1);
+            return array_slice($this->getFormFields(), 0, 1);
         }
 
         return array_where($this->getFormFields(), function ($value) {

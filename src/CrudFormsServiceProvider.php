@@ -8,7 +8,6 @@ class CrudFormsServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
      */
     public function boot()
     {

@@ -71,7 +71,7 @@
                                         </form>
                                     @elseif ($withTrashed)
                                         {{-- Restore SoftDeleted --}}
-                                        <form action="{{ route("$route.restore", $entity->id) }}" method="POST" style="display: inline-block;">
+                                        <form action="{{ '/' . request()->path()  . '/' . $entity->id . '/restore' }}" method="POST" style="display: inline-block;">
                                             {{ method_field('PUT') }}
                                             {{ csrf_field() }}
                                             <button class="btn btn-success restore-btn" type="submit">
