@@ -18,14 +18,14 @@ From the command line, run:
 ```
 composer require achillesp/laravel-crud-forms
 ```
- 
+
 ### Configuration
 
 This package uses a config file which you can override by publishing it to your app's config dir.
 
 ```
 php artisan vendor:publish --provider=Achillesp\CrudForms\CrudFormsServiceProvider --tag=config
-``` 
+```
 
 ## Usage
 
@@ -57,7 +57,7 @@ class PostController extends Controller
         $this->model = $post;
     }
 }
-``` 
+```
 
 In the controller's constructor you can define the properties which are handled by the controller.
 The available properties that can be defined are as follows.
@@ -71,7 +71,7 @@ This is the model, which should be passed in the constructor through Dependency 
 This is an array of all the fields you need in the forms. Each field is declared as an array that has:
 1. `name`: This is the model's attribute name, as it is in the database.
 2. `label`: This is the field's label in the forms.
-3. `type`: The type of the form input field that will be used. Accepted types are: 
+3. `type`: The type of the form input field that will be used. Accepted types are:
     - text
     - textarea
     - email
@@ -83,11 +83,11 @@ This is an array of all the fields you need in the forms. Each field is declared
     - checkbox
     - checkbox_multiple
     - radio
-4. `relationship`: This is needed in case of a select, select_multiple, radio or checkbox_multiple buttons. 
-You can state here the name of the relationship as it is defined in the model. 
+4. `relationship`: This is needed in case of a select, select_multiple, radio or checkbox_multiple buttons.
+You can state here the name of the relationship as it is defined in the model.
 In the example bellow, the `Post` model has a `belongsTo` relationship to `category` and a `belongsToMany` relationship to `tags`.
 For `belongsTo` relationships you can use a select or a radio(group of radios) input.
-For `belongsToMany` relationships you can use a select_multiple or checkbox_multiple inputs. 
+For `belongsToMany` relationships you can use a select_multiple or checkbox_multiple inputs.
 5. `relFieldName`: This is optional. It is used only in case we have a relationship, to set the name of the attribute of the related model that is displayed (ie. in a select's options).
 If not defined, the default attribute to be used is `name`.
 
@@ -108,14 +108,18 @@ $this->formFields = [
 These are the model's attributes that are displayed in the index page.
 
 ```php
-$this->indexFields = ['title', 'category_id', 'published'];
+$this->indexFields = [
+    ['label' => 'title', 'type' => 'text'],
+    ['label' => 'category_id', 'type' => 'text'],
+    ['label' => 'published', 'type' => 'text'],
+];
 ```
 
 If not defined, then the first of the `formFields` is shown.
 
 ### The `formTitle` (optional)
 
-You can optionally, define the name of the model as we want it to appear in the views. 
+You can optionally, define the name of the model as we want it to appear in the views.
 If not defined, the name of the model will be used.
 
 ### The `bladeLayout` (optional)
@@ -178,13 +182,13 @@ The views are built with bootstrap v.3 and also have css classes to support some
 - datepicker class is used in date inputs
 - data-table class is used in the index view table
 
-It is also possible to publish the views, so you can change them anyway you need. 
+It is also possible to publish the views, so you can change them anyway you need.
 To publish them, use the following artisan command:
 
 ```
 php artisan vendor:publish --provider=Achillesp\CrudForms\CrudFormsServiceProvider --tag=views
-``` 
+```
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information. 
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
