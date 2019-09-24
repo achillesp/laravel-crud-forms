@@ -2,6 +2,8 @@
 
 namespace Achillesp\CrudForms;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
@@ -173,7 +175,7 @@ trait CrudForms
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),
+        Validator::make($request->all(),
             $this->getValidationRules(),
             $this->getValidationMessages(),
             $this->getValidationAttributes()
@@ -261,7 +263,7 @@ trait CrudForms
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),
+        Validator::make($request->all(),
             $this->getValidationRules(),
             $this->getValidationMessages(),
             $this->getValidationAttributes()
@@ -316,7 +318,7 @@ trait CrudForms
 
         request()->session()->flash('status', 'Data restored.');
 
-        return redirect(str_before(request()->path(), "/$id/restore"));
+        return redirect(Str::before(request()->path(), "/$id/restore"));
     }
 
     /**
@@ -334,7 +336,7 @@ trait CrudForms
         }
 
         foreach ($this->formFields as $key => $field) {
-            if (array_has($field, 'relationship') && !array_has($field, 'relFieldName')) {
+            if (Arr::has($field, 'relationship') && !Arr::has($field, 'relFieldName')) {
                 // set default name of related table main field
                 $this->formFields[$key]['relFieldName'] = 'name';
             }
@@ -352,8 +354,8 @@ trait CrudForms
     {
         foreach ($this->getFormFields() as $field) {
             if (
-                array_has($field, 'relationship') &&
-                !array_has($this->relationships, $field['relationship']) &&
+                Arr::has($field, 'relationship') &&
+                !Arr::has($this->relationships, $field['relationship']) &&
                 method_exists($this->model, $field['relationship'])
             ) {
                 $this->relationships[] = $field['relationship'];
@@ -433,7 +435,7 @@ trait CrudForms
             return $this->formTitle;
         }
         // No title defined. We return the model name.
-        return title_case(class_basename($this->model));
+        return Str::title(class_basename($this->model));
     }
 
     /**
@@ -450,7 +452,7 @@ trait CrudForms
             return array_slice($this->getFormFields(), 0, 1);
         }
 
-        return array_where($this->getFormFields(), function ($value) {
+        return Arr::where($this->getFormFields(), function ($value) {
             return in_array($value['name'], $this->indexFields, true);
         });
     }
@@ -468,8 +470,8 @@ trait CrudForms
 
         foreach ($relationships as $relationship) {
             // We need to find the relationship's field
-            $field = array_first(array_filter($formFields, function ($var) use ($relationship) {
-                if (array_has($var, 'relationship') && ($relationship == $var['relationship'])) {
+            $field = Arr::first(array_filter($formFields, function ($var) use ($relationship) {
+                if (Arr::has($var, 'relationship') && ($relationship == $var['relationship'])) {
                     return $var;
                 }
             }));

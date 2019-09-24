@@ -6,7 +6,7 @@ use Achillesp\CrudForms\Test\Models\Post;
 
 class CrudFormsTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }

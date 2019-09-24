@@ -11,7 +11,7 @@
                         <i class='fa fa-plus'></i> Add New {{ $title }}
                     </a>
                 </div>
-                <h3 class="panel-title">{{ str_plural($title) }} Index</h3>
+                <h3 class="panel-title">{{ Illuminate\Support\Str::plural($title) }} Index</h3>
             </div>
             <div class="panel-body">
                 <table class="table table-striped table-condensed data-table">
