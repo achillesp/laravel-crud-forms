@@ -145,9 +145,7 @@ trait CrudForms
     {
         $entity = $this->model;
 
-        if (count($this->getRelationships())) {
-            $relationshipOptions = $this->getModelRelationshipData();
-        }
+        $relationshipOptions = $this->getModelRelationshipData();
 
         $fields = $this->getFormFields();
         $title = $this->getFormTitle();
@@ -224,7 +222,7 @@ trait CrudForms
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit($id)
     {
@@ -232,9 +230,7 @@ trait CrudForms
 
         $this->loadModelRelationships($entity);
 
-        if (count($this->getRelationships())) {
-            $relationshipOptions = $this->getModelRelationshipData();
-        }
+        $relationshipOptions = $this->getModelRelationshipData();
 
         $fields = $this->getFormFields();
         $title = $this->getFormTitle();
@@ -481,7 +477,7 @@ trait CrudForms
             }
         }
 
-        return $relationshipData;
+        return isset($relationshipData) ? $relationshipData : [];
     }
 
     // --------------------------------
