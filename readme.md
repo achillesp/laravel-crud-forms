@@ -1,5 +1,7 @@
 # Laravel CRUD Forms
 
+[![run-tests](https://github.com/achillesp/laravel-crud-forms/actions/workflows/run-tests.yml/badge.svg)](https://github.com/achillesp/laravel-crud-forms/actions/workflows/run-tests.yml)
+
 This is a Laravel >=5.5 package to help easily create CRUD (Create, Read, Update, Delete) forms for eloquent models (as well as an index page).
 It aims to be used as a quick tool which does not interfere with the other parts of the application that it's used in.
 
