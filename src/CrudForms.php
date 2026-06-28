@@ -5,6 +5,8 @@ namespace Achillesp\CrudForms;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
@@ -106,9 +108,9 @@ trait CrudForms
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(): View
     {
         if ($this->withTrashed) {
             $entities = $this->model->withTrashed()->get();
@@ -139,9 +141,9 @@ trait CrudForms
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(): View
     {
         $entity = $this->model;
 
@@ -171,7 +173,7 @@ trait CrudForms
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         Validator::make($request->all(),
             $this->getValidationRules(),
@@ -193,9 +195,9 @@ trait CrudForms
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
-    public function show($id)
+    public function show($id): View
     {
         $entity = $this->model->findOrFail($id);
 
@@ -222,9 +224,9 @@ trait CrudForms
      *
      * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $entity = $this->model->findOrFail($id);
 
@@ -257,7 +259,7 @@ trait CrudForms
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         Validator::make($request->all(),
             $this->getValidationRules(),
@@ -288,9 +290,9 @@ trait CrudForms
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $entity = $this->model->findOrFail($id);
 
@@ -306,9 +308,9 @@ trait CrudForms
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function restore($id)
+    public function restore($id): RedirectResponse
     {
         $this->model->withTrashed()->where('id', $id)->restore();
 
@@ -322,7 +324,7 @@ trait CrudForms
      *
      * @return array
      */
-    public function getFormFields()
+    public function getFormFields(): array
     {
         // No fields declared. We have a table with only a name field.
         if (0 == count($this->formFields)) {
@@ -346,12 +348,12 @@ trait CrudForms
      *
      * @return array
      */
-    public function getRelationships()
+    public function getRelationships(): array
     {
         foreach ($this->getFormFields() as $field) {
             if (
                 Arr::has($field, 'relationship') &&
-                !Arr::has($this->relationships, $field['relationship']) &&
+                !in_array($field['relationship'], $this->relationships, true) &&
                 method_exists($this->model, $field['relationship'])
             ) {
                 $this->relationships[] = $field['relationship'];
@@ -370,7 +372,7 @@ trait CrudForms
      *
      * @return array
      */
-    protected function getValidationRules()
+    protected function getValidationRules(): array
     {
         return $this->validationRules ?: [];
     }
@@ -380,7 +382,7 @@ trait CrudForms
      *
      * @return array
      */
-    protected function getValidationMessages()
+    protected function getValidationMessages(): array
     {
         return $this->validationMessages ?: [];
     }
@@ -391,7 +393,7 @@ trait CrudForms
      *
      * @return array
      */
-    protected function getValidationAttributes()
+    protected function getValidationAttributes(): array
     {
         $attributes = [];
 
@@ -407,7 +409,7 @@ trait CrudForms
      *
      * @return string
      */
-    protected function getRoute()
+    protected function getRoute(): string
     {
         if ($this->route) {
             return $this->route;
@@ -425,7 +427,7 @@ trait CrudForms
      *
      * @return string
      */
-    protected function getFormTitle()
+    protected function getFormTitle(): string
     {
         if ($this->formTitle) {
             return $this->formTitle;
@@ -439,7 +441,7 @@ trait CrudForms
      *
      * @return array
      */
-    protected function getIndexFields()
+    protected function getIndexFields(): array
     {
         // If none declared, use the first of the formFields.
         if (0 == count($this->indexFields)) {
@@ -458,7 +460,7 @@ trait CrudForms
      *
      * @return array array of collections
      */
-    protected function getModelRelationshipData()
+    protected function getModelRelationshipData(): array
     {
         $formFields = $this->getFormFields();
 
@@ -490,7 +492,7 @@ trait CrudForms
      * @param Model   $model
      * @param Request $request
      */
-    protected function syncModelRelationships(Model $model, Request $request)
+    protected function syncModelRelationships(Model $model, Request $request): void
     {
         $relationships = $this->getRelationships();
 
@@ -506,7 +508,7 @@ trait CrudForms
      *
      * @param mixed $entities
      */
-    protected function loadModelRelationships($entities)
+    protected function loadModelRelationships($entities): void
     {
         $relationships = $this->getRelationships();
 
@@ -524,7 +526,7 @@ trait CrudForms
      *
      * @return bool
      */
-    protected function hasField($fieldName)
+    protected function hasField($fieldName): bool
     {
         return in_array($fieldName, array_column($this->formFields, 'name'), true);
     }

@@ -9,7 +9,7 @@ class CrudFormsServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
             __DIR__.'/../config/crud-forms.php' => config_path('crud-forms.php'),
@@ -17,10 +17,10 @@ class CrudFormsServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__.'/../config/crud-forms.php', 'crud-forms');
 
-        $this->loadViewsFrom(__DIR__.'/../src/views', 'crud-forms');
+        $this->loadViewsFrom(__DIR__.'/views', 'crud-forms');
 
         $this->publishes([
-            __DIR__.'/../src/views' => resource_path('views/vendor/crud-forms'),
+            __DIR__.'/views' => resource_path('views/vendor/crud-forms'),
         ], 'views');
     }
 }
