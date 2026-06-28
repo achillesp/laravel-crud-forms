@@ -171,19 +171,66 @@ $this->validationAttributes = [
 ];
 ```
 
-## Views
+## Views and themes
 
-The views are built with bootstrap v.3 and also have css classes to support some common JavaScript libraries.
-- select2 class is used in select inputs
-- datepicker class is used in date inputs
-- data-table class is used in the index view table
+The package ships with two view sets ("themes") so the forms match whatever your
+app uses:
 
-It is also possible to publish the views, so you can change them anyway you need. 
-To publish them, use the following artisan command:
+- **`bootstrap`** *(default)* — Bootstrap 3 markup. Kept as the default for
+  backwards compatibility. It expects Bootstrap 3 CSS (and, if `button_icons` is
+  enabled, Font Awesome) to be loaded by your app's layout.
+- **`tailwind`** — Tailwind CSS markup with inline SVG icons (no Font Awesome
+  dependency). The bundled layout pulls Tailwind from the Play CDN so it looks
+  styled out of the box; in production you should use your app's compiled Tailwind
+  (set `crud-forms.blade_layout` to your own layout, or publish and edit the
+  bundled one).
+
+### Choosing a theme (no publishing required)
+
+Publish the config file and set the `theme` option:
 
 ```
-php artisan vendor:publish --provider=Achillesp\CrudForms\CrudFormsServiceProvider --tag=views
-``` 
+php artisan vendor:publish --provider="Achillesp\CrudForms\CrudFormsServiceProvider" --tag=config
+```
+
+```php
+// config/crud-forms.php
+'theme' => 'tailwind', // or 'bootstrap' (default)
+```
+
+That's all that's needed to switch the rendered forms — you do **not** have to
+publish the views.
+
+### Publishing views for customisation
+
+If you want to edit the markup yourself, publish a theme's views. Both sets
+publish to `resources/views/vendor/crud-forms`, and **published views always take
+precedence** over the `theme` setting above.
+
+```
+# Bootstrap 3 views
+php artisan vendor:publish --provider="Achillesp\CrudForms\CrudFormsServiceProvider" --tag=views
+
+# Tailwind views
+php artisan vendor:publish --provider="Achillesp\CrudForms\CrudFormsServiceProvider" --tag=views-tailwind
+```
+
+Because both sets publish to the same folder, only one can be published at a time.
+To switch the published set, add `--force` (or delete
+`resources/views/vendor/crud-forms` first). Publish by `--tag`, not by `--provider`
+alone, so you copy exactly one view set.
+
+### Which views are used? (precedence)
+
+1. Published views in `resources/views/vendor/crud-forms`, if present.
+2. Otherwise, the bundled view set chosen by `crud-forms.theme`.
+
+### JavaScript hooks
+
+Both themes keep CSS classes for common JavaScript libraries:
+- `select2` on select inputs
+- `datepicker` on date inputs
+- `data-table` on the index table
 
 ## License
 
