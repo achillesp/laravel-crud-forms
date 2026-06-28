@@ -1,15 +1,65 @@
 # Laravel CRUD Forms
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/achillesp/laravel-crud-forms.svg)](https://packagist.org/packages/achillesp/laravel-crud-forms)
 [![run-tests](https://github.com/achillesp/laravel-crud-forms/actions/workflows/run-tests.yml/badge.svg)](https://github.com/achillesp/laravel-crud-forms/actions/workflows/run-tests.yml)
+[![Total Downloads](https://img.shields.io/packagist/dt/achillesp/laravel-crud-forms.svg)](https://packagist.org/packages/achillesp/laravel-crud-forms)
+[![License](https://img.shields.io/packagist/l/achillesp/laravel-crud-forms.svg)](LICENSE.md)
 
-This is a Laravel >=5.5 package to help easily create CRUD (Create, Read, Update, Delete) forms for eloquent models (as well as an index page).
-It aims to be used as a quick tool which does not interfere with the other parts of the application that it's used in.
+Scaffold a complete CRUD (Create, Read, Update, Delete) interface for an Eloquent
+model — an index listing plus create/show/edit forms with validation and soft-delete
+support — by adding **one trait** to a resource controller. No generators and no
+reactive front-end: just a trait and a set of publishable, server-rendered Blade views
+(Bootstrap or Tailwind) that stay out of the way of the rest of your app.
+This aims to be used as a quick tool which does not interfere with the other parts of the application that it's used in.
 
-The package provides:
-- A trait to use in resource controllers and
-- A series of views for displaying the forms
+```php
+use App\Models\Post;
+use Achillesp\CrudForms\CrudForms;
 
-The views are built using bootstrap (v3), but the styling can easily be overriden.
+class PostController extends Controller
+{
+    use CrudForms;
+
+    public function __construct(Post $post)
+    {
+        $this->model = $post;
+
+        $this->formFields = [
+            ['name' => 'title',       'label' => 'Title',    'type' => 'text'],
+            ['name' => 'body',        'label' => 'Body',     'type' => 'textarea'],
+            ['name' => 'category_id', 'label' => 'Category', 'type' => 'select', 'relationship' => 'category'],
+        ];
+    }
+}
+```
+
+```php
+// routes/web.php
+Route::resource('posts', PostController::class);
+```
+
+That gives you a working CRUD UI for the `Post` model. See [Usage](#usage) for every
+available option, and [Views and themes](#views-and-themes) for styling.
+
+## Compatibility
+
+The latest release supports **Laravel 11, 12 and 13** on **PHP 8.2+** (PHP 8.3+ for
+Laravel 13). Composer installs the right version for your app automatically:
+
+```
+composer require achillesp/laravel-crud-forms
+```
+
+Older Laravel versions are covered by earlier major releases:
+
+| Laravel        | Package version   |
+|---------------:|-------------------|
+| 11, 12, 13     | `^9.0` (latest)   |
+| 10             | `^6.0`            |
+| 9              | `^5.0`            |
+| 8              | `^4.0`            |
+| 7              | `^3.0`            |
+| 6              | `^2.0`            |
 
 ## Installation
 
@@ -26,7 +76,7 @@ composer require achillesp/laravel-crud-forms
 This package uses a config file which you can override by publishing it to your app's config dir.
 
 ```
-php artisan vendor:publish --provider=Achillesp\CrudForms\CrudFormsServiceProvider --tag=config
+php artisan vendor:publish --provider="Achillesp\CrudForms\CrudFormsServiceProvider" --tag=config
 ``` 
 
 ## Usage
@@ -36,10 +86,12 @@ The trait provides all the required methods for a Resource Controller, as well a
 
 ### Routes
 
-If for example you have a `Post` model, you would define the routes:
+If for example you have a `Post` model, you would define the route:
 
 ```php
-Route::resource('/posts', 'PostController');
+use App\Http\Controllers\PostController;
+
+Route::resource('posts', PostController::class);
 ```
 
 ### Controller
@@ -47,7 +99,7 @@ Route::resource('/posts', 'PostController');
 Then in your `PostController`, you will need to use the trait and also define a constructor where you give the needed details of the model.
 
 ```php
-use App\Post;
+use App\Models\Post;
 use Achillesp\CrudForms\CrudForms;
 
 class PostController extends Controller
@@ -135,7 +187,7 @@ $this->withTrashed = true;
 In order to be able to restore the models, you need to define an additional route:
 
 ```php
-Route::put('/posts/{post}/restore', ['as' => 'posts.restore', 'uses' => 'PostController@restore']);
+Route::put('posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore');
 ```
 
 ### The `validationRules` array (optional)
