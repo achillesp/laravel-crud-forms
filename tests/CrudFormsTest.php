@@ -2,6 +2,7 @@
 
 namespace Achillesp\CrudForms\Test;
 
+use PHPUnit\Framework\Attributes\Test;
 use Achillesp\CrudForms\Test\Models\Post;
 
 class CrudFormsTest extends TestCase
@@ -11,7 +12,7 @@ class CrudFormsTest extends TestCase
         parent::setUp();
     }
 
-    /** @test */
+    #[Test]
     public function it_loads_all_resources_in_the_index()
     {
         $posts = Post::all()->load(['category', 'tags']);
@@ -21,7 +22,7 @@ class CrudFormsTest extends TestCase
                     ->assertSee($posts[0]->title);
     }
 
-    /** @test */
+    #[Test]
     public function it_shows_a_single_resource()
     {
         $post = Post::find(1)->load(['category', 'tags']);
@@ -31,7 +32,7 @@ class CrudFormsTest extends TestCase
                     ->assertSee($post->title);
     }
 
-    /** @test */
+    #[Test]
     public function it_loads_the_form_for_editing_resource()
     {
         $post = Post::find(1)->load(['category', 'tags']);
@@ -42,7 +43,7 @@ class CrudFormsTest extends TestCase
                     ->assertSee($post->title);
     }
 
-    /** @test */
+    #[Test]
     public function it_loads_the_form_for_creating_a_resource()
     {
         $response = $this->get('/post/create');
@@ -50,7 +51,7 @@ class CrudFormsTest extends TestCase
         $response->assertSee('Submit Form');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_create_a_new_resource()
     {
         $this->post('/post', [
@@ -65,7 +66,7 @@ class CrudFormsTest extends TestCase
         $this->assertCount(1, Post::where('title', '=', 'post X')->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_update_a_resource()
     {
         $this->assertCount(0, Post::where('title', '=', 'post X')->get());
@@ -82,7 +83,7 @@ class CrudFormsTest extends TestCase
         $this->assertCount(1, Post::where('title', '=', 'post X')->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_delete_a_resource()
     {
         $postCount = Post::all()->count();
@@ -91,7 +92,7 @@ class CrudFormsTest extends TestCase
         $this->assertSame($postCount - 1, Post::all()->count());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_restore_a_soft_deleted_resource()
     {
         $postCount = Post::all()->count();
