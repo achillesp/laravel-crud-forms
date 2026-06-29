@@ -286,6 +286,10 @@ Both themes keep CSS classes for common JavaScript libraries:
 - `datepicker` on date inputs
 - `data-table` on the index table
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the release history.
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information. 
